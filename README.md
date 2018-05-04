@@ -4,11 +4,13 @@
 
 They are various options to get started with OpenShift: 
 
+
 #### Openshift Interactive
 
 This [portal](https://learn.openshift.com/) is a great start to get familiar with Openshift.
 
-#### OC Cluster Up
+
+#### Cluster Up
 
 ##### Instructions for MacOSX 
 
