@@ -108,7 +108,50 @@ This will create a new namespace called **hello-world**.
 
 
 
+<a name="pod"/>
 
+
+### Your First Pod
+
+The Pod is the minimal building blog in Openshift, represent a single application from the perspective of Openshift. But in the inside it can contain multiple resources containers, storage resources, etc.
+
+To create we just need to create a small template: 
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: myapp-pod
+  labels:
+    app: myapp
+spec:
+  containers:
+  - name: myapp-container
+    image: busybox
+    command: ['sh', '-c', 'echo Hello Openshift! && sleep 3600']
+```
+
+
+Consider this template like a recipe, it basically tells Openshift what to do for you, in this case it specifies a resource of the **kind** Pod, and put some name to it *myapp-pod*, then we describe what we want to run inside, we said, we want a **busybox** container and we want to run to run some shell commands in it.  
+
+Then we need to pass this to Openshift: 
+
+```
+ oc create -f pod.yml
+ 
+ # or you can grab the template from the cloud. 
+ oc create -f https://raw.githubusercontent.com/cesarvr/Openshift/master/templates/pod.yml
+``` 
+
+
+
+
+
+
+
+
+
+[![asciicast](https://asciinema.org/a/cLPabsEksE1J7GcD8VruXMp6b.png)](https://asciinema.org/a/cLPabsEksE1J7GcD8VruXMp6b)
 
 
 
