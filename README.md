@@ -137,15 +137,26 @@ Consider this template like a recipe, it basically tells Openshift what to do fo
 Then we need to pass this to Openshift: 
 
 ```
- oc create -f pod.yml
+ oc create -f pod.yml       #pod "myapp-pod" created
  
- # or you can grab the template from the cloud. 
- oc create -f https://raw.githubusercontent.com/cesarvr/Openshift/master/templates/pod.yml
+ # or you can grab the template from the cloud.
+ 
+ oc create -f https://raw.githubusercontent.com/cesarvr/Openshift/master/templates/pod.yml  #pod "myapp-pod" created
 ``` 
 
+Then we can ask Openshift, about the state of the resource by doing: 
 
+```
+oc get pods                                                               
 
+```
 
+We should see our Pod up and running. 
+
+```
+  NAME        READY     STATUS    RESTARTS   AGE
+  myapp-pod   1/1       Running   0          4d
+```
 
 
 
