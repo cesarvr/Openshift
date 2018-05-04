@@ -12,11 +12,9 @@ They are various options to get started with OpenShift:
    * [Minishift](#minishift)
 <!--te-->
 
-
-
-
 <a name="interactive"/>
 ### Openshift Interactive
+
 This [portal](https://learn.openshift.com/) is a great start to get familiar with Openshift.
 
 
