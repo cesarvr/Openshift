@@ -11,7 +11,7 @@ They are various options to get started with OpenShift:
 First we need to install [Docker](https://download.docker.com/mac/stable/1.13.1.15353/Docker.dmg), at the moment of writing this document *oc-client* work best with this old version.
 
 Add insecure registry: 
-![Openshift UI](https://github.com/cesarvr/Spring-Boot/blob/master/docs/pipeline.png?raw=true)
+![Openshift UI](https://github.com/cesarvr/Openshift/blob/master/assets/insecure.png?raw=true)
 
 
 Install Socat using [Homebrew](https://brew.sh/), ``` brew install socat```
