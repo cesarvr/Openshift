@@ -8,7 +8,7 @@ They are various options to get started with OpenShift:
    * [Openshift Interactive](#interactive)
    * [OC Cluster Up](#ocup)
    * [Minishift](#minishift)
-   * [Login And First Project](#first)
+   * [Login And First Project/Namespace](#first)
    * [Your First Pod](#pod)
 <!--te-->
 
@@ -82,7 +82,27 @@ In some cases using oc-cli method can be complicated to setup, [Minishift](https
 
 <a name="first"/>
 
-### Login And First Project
+### Login And First Project/Namespace
+
+Once you have setup your cluster you can start playing with Openshift, first we can start by login in, to do this we need to write the following command: 
+
+``` 
+  oc login -u <username>
+```
+
+or if you want to get a interactive login: 
+
+```
+ oc login
+```
+
+Project/Namespaces are the way Openshift divide the cluster between users, basically all your object should be defined under a Openshift namespace, to create a new project you should do.
+
+```
+ oc new-project hello-world
+```
+
+This will create a new namespace called **hello-world**. 
 
 [![asciicast](https://asciinema.org/a/J0ASJwIMlReglXQpbxz2QDZL7.png)](https://asciinema.org/a/J0ASJwIMlReglXQpbxz2QDZL7)
 
