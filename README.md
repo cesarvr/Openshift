@@ -34,6 +34,11 @@ Install Socat using [Homebrew](https://brew.sh/), ``` brew install socat```
 
 Now download [oc-client](https://github.com/openshift/origin/releases), extract and add it into your path. 
 
+```sh 
+export PATH=$HOME/folder-with-oc-client/:$PATH
+```
+
+
 If everything is fine, you should be able to run this: 
 
 ```sh 
@@ -45,9 +50,14 @@ If everything is fine, you should be able to run this:
 ```
 
 Now you can try and create your Openshift cluster: 
+
 ```sh 
 oc cluster up
+``` 
 
+We should get the following message:
+
+```sh 
 Starting OpenShift using openshift/origin:v3.7.1 ...
 OpenShift server started.
 
