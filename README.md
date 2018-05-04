@@ -6,7 +6,6 @@ They are various options to get started with OpenShift:
 
 
 #### Openshift Interactive
-=======
 <!--ts-->
    * [Openshift Interactive](#interactive)
    * [OC Cluster Up](#ocup)
