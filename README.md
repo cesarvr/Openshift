@@ -84,8 +84,7 @@ In some cases using oc-cli method can be complicated to setup, [Minishift](https
 
 ### Login And First Project
 
-<script src="https://asciinema.org/a/J0ASJwIMlReglXQpbxz2QDZL7.js" id="asciicast-J0ASJwIMlReglXQpbxz2QDZL7" async></script>
-
+[![asciicast](https://asciinema.org/a/J0ASJwIMlReglXQpbxz2QDZL7.png)](https://asciinema.org/a/J0ASJwIMlReglXQpbxz2QDZL7)
 
 
 
