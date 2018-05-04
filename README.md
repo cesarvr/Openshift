@@ -8,6 +8,8 @@ They are various options to get started with OpenShift:
    * [Openshift Interactive](#interactive)
    * [OC Cluster Up](#ocup)
    * [Minishift](#minishift)
+   * [Login And First Project](#first)
+   * [Your First Pod](#pod)
 <!--te-->
 
 <a name="interactive"/>
@@ -37,7 +39,6 @@ Now download [oc-client](https://github.com/openshift/origin/releases), extract 
 ```sh 
 export PATH=$HOME/folder-with-oc-client/:$PATH
 ```
-
 
 If everything is fine, you should be able to run this: 
 
@@ -77,6 +78,14 @@ To login as administrator:
 ### Minishift 
 
 In some cases using oc-cli method can be complicated to setup, [Minishift](https://github.com/minishift/minishift#getting-started) offers a VM solution that encapsulate all this complexity. 
+
+
+<a name="first"/>
+
+### Login And First Project
+
+<script src="https://asciinema.org/a/J0ASJwIMlReglXQpbxz2QDZL7.js" id="asciicast-J0ASJwIMlReglXQpbxz2QDZL7" async></script>
+
 
 
 
