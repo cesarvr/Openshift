@@ -19,7 +19,7 @@ Install Socat using [Homebrew](https://brew.sh/), ``` brew install socat```
 
 Now download [oc-client](https://github.com/openshift/origin/releases), extract and add it into your path. 
 
-If everything is fine you can try: 
+If everything is fine, you should be able to run this: 
 
 ```sh 
   oc version
@@ -28,3 +28,30 @@ If everything is fine you can try:
   #kubernetes v1.9.1+a0ce1bc657
   #features: Basic-Auth
 ```
+
+Now you can try and create your Openshift cluster: 
+```sh 
+oc cluster up
+
+Starting OpenShift using openshift/origin:v3.7.1 ...
+OpenShift server started.
+
+The server is accessible via web console at:
+    https://127.0.0.1:8443
+
+You are logged in as:
+    User:     developer
+    Password: <any value>
+
+To login as administrator:
+    oc login -u system:admin
+```
+
+
+
+
+
+
+
+
+
