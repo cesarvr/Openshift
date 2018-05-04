@@ -1,14 +1,26 @@
-## Openshift
+# Openshift
 
-### Trying Openshift
+### Getting Started
 
 They are various options to get started with OpenShift: 
 
-#### Openshift Interactive
+<!--ts-->
+   * [Openshift Interactive](#interactive)
+   * [OC Cluster Up](#ocup)
+   * [Faster Continuous Integration](#faster)
+<!--te-->
+
+
+
+
+<a name="interactive"/>
+### Openshift Interactive
 
 This [portal](https://learn.openshift.com/) is a great start to get familiar with Openshift.
 
-#### OC Cluster Up
+
+<a name="ocup"/>
+### OC Cluster Up
 
 ##### Instructions for MacOSX 
 
@@ -50,6 +62,9 @@ You are logged in as:
 To login as administrator:
     oc login -u system:admin
 ```
+
+<a name="minishift"/>
+### OC Cluster Up
 
 
 
