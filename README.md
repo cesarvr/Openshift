@@ -132,7 +132,7 @@ spec:
 ```
 
 
-Consider this template like a recipe, it basically tells Openshift what to do for you, in this case it specifies a resource of the **kind** Pod, and put some name to it *myapp-pod*, then we describe what we want to run inside, we said, we want a **busybox** container and we want to run to run some shell commands in it.  
+Consider this template like a recipe, it basically tells Openshift what to do for you, in this case it specifies a resource of the **kind** Pod, and put some name to it *myapp-pod*, then we describe what we want to run inside, we said, we want a **busybox** container and we want to run to run some shell **command** in it.  
 
 Then we need to pass this to Openshift: 
 
