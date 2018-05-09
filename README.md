@@ -5,11 +5,13 @@
 They are various options to get started with OpenShift: 
 
 <!--ts-->
-   * [Openshift Interactive](#interactive)
-   * [OC Cluster Up](#ocup)
-   * [Minishift](#minishift)
-   * [Login And First Project/Namespace](#first)
-   * [Your First Pod](#pod)
+   * Getting Started
+     - [Openshift Interactive](#interactive)
+     - [OC Cluster Up](#ocup)
+     - [Minishift](#minishift)
+   * Application Development
+     - [Login And First Project/Namespace](#first)
+     - [Your First Pod](#pod)
 <!--te-->
 
 <a name="interactive"/>
