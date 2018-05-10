@@ -12,6 +12,7 @@ They are various options to get started with OpenShift:
    * Application Development
      - [Login And First Project/Namespace](#first)
      - [Your First Pod](#pod)
+     - [Deployment Config](#deploy)
 <!--te-->
 
 <a name="interactive"/>
@@ -164,6 +165,99 @@ We should see our Pod up and running.
 
 
 [![asciicast](https://asciinema.org/a/cLPabsEksE1J7GcD8VruXMp6b.png)](https://asciinema.org/a/cLPabsEksE1J7GcD8VruXMp6b)
+
+
+
+<a name="deploy"/>
+
+
+### Your First Deployment
+
+In the last section, we end up running our first pod, but there some catch, we are not able to scale up or down our application, also we are not able to update the state or rolling out a new version. For been able to do that we need another entity called [DeploymentConfig](https://docs.openshift.com/enterprise/3.0/dev_guide/deployments.html). 
+
+[DeploymentConfig] is a way to describe a desired state for our application, we can scale, downscale, pause deployments, roll-back and roll-out.
+
+Let's scale our app, to do this we just need to create a Deployment template: 
+
+```yml 
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: hello-dev
+spec:
+  selector:
+    matchLabels:
+      app: hello-dev
+  replicas: 2 # tells deployment to run 2 pods matching the template
+  template: 
+    metadata:
+      labels:
+        app: hello-dev
+    spec:
+      containers:
+      - name: myapp-container
+        image: busybox
+        command: ['sh', '-c', 'echo Hello World! && sleep 13600']
+```
+
+The template here is very similar to the one used to create the Pod: 
+
+```yml 
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: hello-dev
+```
+Here we said we want to target the **apps/v1beta** endpoint of Openshift, and inside this endpoint we want the Deployment object. 
+
+```yml 
+spec:
+  selector:
+    matchLabels:
+      app: hello-dev
+  replicas: 2 # tells deployment to run 1 pods matching the template
+  template: 
+    metadata:
+      labels:
+        app: hello-dev
+```
+Here we describe the state we want for our application, we specify we want two replicas, once the  Deployment Config is created, Openshift will check the current state of the system (0 replicas) versus the expected state (2 replicas), then it will increase the number of Pods to achieve the desired state.   
+
+```
+spec:
+  containers:
+    - name: myapp-container
+    image: busybox
+    command: ['sh', '-c', 'echo Hello World! && sleep 13600']
+```
+
+This is the exact same code as our previous example, we just want to say hello and sleep. 
+
+
+### Preparation 
+We are going to deploy simple [Node.js](https://nodejs.org/en/), the best way to do this is to use a BuilderConfig but for know and for the sake of learning we going to do it with a Deployment template and an external image.  
+
+Exporting an image to your cluster is easy, in this case we want to export a nodejs image an [alpine-node](https://hub.docker.com/r/mhart/alpine-node/) work well for this purpose, to import it we just run: 
+
+```sh
+oc import-image alpine-node:latest --from=docker.io/mhart/alpine-node --confirm
+```
+
+This will import the image into our cluster. 
+
+Now we need to create our deployment template. 
+
+```sh
+
+```
+
+
+
+
+
+
+
+
 
 
 
