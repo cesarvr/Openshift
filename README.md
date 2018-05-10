@@ -233,6 +233,11 @@ spec:
 
 This is the exact same code as our previous example, we just want to say hello and sleep. 
 
+To load this Deployment template, is similar to what we did with our Pod last time. 
+
+```
+ oc create -f deploy.yml
+```
 
 
 #### Deployment
