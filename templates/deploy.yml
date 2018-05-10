@@ -1,0 +1,18 @@
+apiVersion: apps/v1beta1 # for versions before 1.8.0 use apps/v1beta1
+kind: Deployment
+metadata:
+  name: hello-dev
+spec:
+  selector:
+    matchLabels:
+      app: hello-dev
+  replicas: 2 # tells deployment to run 1 pods matching the template
+  template: 
+    metadata:
+      labels:
+        app: hello-dev
+    spec:
+      containers:
+      - name: myapp-container
+        image: busybox
+        command: ['sh', '-c', 'echo Hello World! && sleep 13600']
