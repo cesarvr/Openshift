@@ -233,6 +233,18 @@ spec:
 
 This is the exact same code as our previous example, we just want to say hello and sleep. 
 
+To load this Deployment template, is similar to what we did with our Pod last time. 
+
+```
+ oc create -f deploy.yml
+```
+
+
+#### Deployment
+
+![Image of Yaktocat](https://github.com/cesarvr/Openshift/blob/master/assets/deploy.gif?raw=true)
+
+
 
 ### Preparation 
 We are going to deploy simple [Node.js](https://nodejs.org/en/), the best way to do this is to use a BuilderConfig but for know and for the sake of learning we going to do it with a Deployment template and an external image.  
