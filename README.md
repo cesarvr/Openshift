@@ -242,7 +242,7 @@ To load this Deployment template, is similar to what we did with our Pod last ti
 
 #### Deployment
 
-![Image of Yaktocat](https://github.com/cesarvr/Openshift/blob/master/assets/oc-deployment-2.gif?raw=true)
+![deployment](https://github.com/cesarvr/Openshift/blob/master/assets/oc-deployment-3.gif?raw=true)
 
 
 
