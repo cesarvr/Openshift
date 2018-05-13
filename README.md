@@ -286,13 +286,62 @@ Now that we have exported our image, we can update our deployment configuration:
 <a name="server_application"/>
 
 ### Deploying Server Application
-```sh
 
+Once we got our image imported into our cluster is ready to use, next step is to modify our previously created deployment template. 
+
+We start with this template: 
+
+```yml 
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: hello-dev
+spec:
+  selector:
+    matchLabels:
+      app: hello-dev
+  replicas: 2 # tells deployment to run 2 pods matching the template
+  template: 
+    metadata:
+      labels:
+        app: hello-dev
+    spec:
+      containers:
+      - name: myapp-container
+        image: busybox
+        command: ['sh', '-c', 'echo Hello World! && sleep 13600']
 ```
 
 
+Here we need to modify the image section, where we going to replace **busybox** with the URL of our imported image, to get the URL just write ```oc get is``` and copy/paste the URL that appear in the section called **Docker Repo**. Next, we need to change the command and add some instruction to execute our Node.js server. 
+
+The ammended template should look like this: 
+
+```sh
+  containers:
+    - name: myapp-container
+      image: alpine-node
+      command: ['node', '-e']
+      args:
+        - require('http').createServer((req, res) => { res.end('Hello World') }).listen(8080)
+```
+
+This will execute ```node -e``` with those **args**, that snippet its just a super simple Node.js HTTP server program that would listen in port 8080 and will respond a ```Hello World```. 
 
 
+You can run the template: 
+
+```
+oc create -f deploy-server.yml 
+```
+
+![deployment server](https://github.com/cesarvr/Openshift/blob/master/assets/deploy-server.gif?raw=true)
+
+If you have the old version of the deployment, you need to delete it first: 
+
+```
+oc delete deployment hello-dev
+```
 
 
 
