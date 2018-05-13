@@ -343,6 +343,7 @@ If you have the old version of the deployment, you need to delete it first:
 oc delete deployment hello-dev
 ```
 
+Umm, we have finish the deployment of our server app, but we still are not comunnicating with our server from the outside, to be honest we don't have even access from our guest machine. For this we need a combination of two Openshift objects Service and Router, in the next section we are going to explore how route request to our Pods. 
 
 
 
