@@ -274,7 +274,7 @@ Some explanations:
    - **Name**: Name of the ImageStream object.  
  - **Docker Repo URL**
    - **172.30.1.1:5000**: This is the URL for the Docker registry in your Openshift installation. 
-   - **hello-world**: Hello world refers to our project/namespace, this means that this image is pullable from this project/namespace only, which is good we don't want to clutter the Docker registry for others. 
+   - **hello-world**: This is the project/namespace, this means that this image is pullable from this project/namespace only, which is good, because we don't want to clutter the Docker registry for others. 
    - **alpine-node**: It's the actual image our ImageStream is pointing to.  
  - **Tags**
    - **tags**: This is the [Docker tag](https://docs.docker.com/engine/reference/commandline/tag/), that our ImageStream is monitoring for changes.  
