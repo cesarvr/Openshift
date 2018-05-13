@@ -263,7 +263,7 @@ oc import-image alpine-node:latest --from=docker.io/mhart/alpine-node --confirm
 We can check the status of the ImageStream by running: 
 
 ```sh 
- oc get is
+oc get is
 
 # NAME          DOCKER REPO                               TAGS      
 # alpine-node   172.30.1.1:5000/hello-world/alpine-node   latest
