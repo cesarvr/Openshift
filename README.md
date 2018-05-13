@@ -13,6 +13,8 @@ They are various options to get started with OpenShift:
      - [Login And First Project/Namespace](#first)
      - [Your First Pod](#pod)
      - [Deployment Config](#deploy)
+        - [Exporting Images](#exporting_images)
+        - [Deploying Server Application](#server_application)
 <!--te-->
 
 <a name="interactive"/>
@@ -245,23 +247,50 @@ To load this Deployment template, is similar to what we did with our Pod last ti
 ![deployment](https://github.com/cesarvr/Openshift/blob/master/assets/oc-deployment-2.gif?raw=true)
 
 
+<a name="exporting_images"/>
 
-### Preparation 
-We are going to deploy simple [Node.js](https://nodejs.org/en/), the best way to do this is to use a BuilderConfig but for know and for the sake of learning we going to do it with a Deployment template and an external image.  
+### Exporting Images
+We are going to deploy simple [Node.js](https://nodejs.org/en/) application, the best way to do this is to use a BuilderConfig but for now and for the sake of learning we going use a external image and update our Deployment Config.  
 
-Exporting an image to your cluster is easy, in this case we want to export a nodejs image an [alpine-node](https://hub.docker.com/r/mhart/alpine-node/) work well for this purpose, to import it we just run: 
+To achieve this goal we are going to export an image to our cluster, for this we need a Openshift object called **ImageStream**, which allow us to monitor and perform actions based in images tag changes.
+
+To export the image we run the following code 
 
 ```sh
 oc import-image alpine-node:latest --from=docker.io/mhart/alpine-node --confirm
 ```
 
-This will import the image into our cluster. 
+We can check the status of the ImageStream by running: 
 
-Now we need to create our deployment template. 
+```sh 
+oc get is
 
+# NAME          DOCKER REPO                               TAGS      
+# alpine-node   172.30.1.1:5000/hello-world/alpine-node   latest
+```
+
+Some explanations: 
+ - **Name**
+   - **Name**: Name of the ImageStream object.  
+ - **Docker Repo URL**
+   - **172.30.1.1:5000**: This is the URL for the Docker registry in your Openshift installation. 
+   - **hello-world**: This is the project/namespace, this means that this image is pullable from this project/namespace only, which is good, because we don't want to clutter the Docker registry for others. 
+   - **alpine-node**: It's the actual image our ImageStream is pointing to.  
+ - **Tags**
+   - **tags**: This is the [Docker tag](https://docs.docker.com/engine/reference/commandline/tag/), that our ImageStream is monitoring for changes.  
+
+
+Now that we have exported our image, we can update our deployment configuration:  
+
+
+<a name="server_application"/>
+
+### Deploying Server Application
 ```sh
 
 ```
+
+
 
 
 
