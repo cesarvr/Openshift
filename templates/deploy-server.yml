@@ -5,12 +5,12 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: hello-dev
+      app: nodejs-app 
   replicas: 2 # tells deployment to run 1 pods matching the template
   template: 
     metadata:
       labels:
-        app: hello-dev
+        app: nodejs-app 
     spec:
       containers:
       - name: myapp-container
@@ -18,6 +18,5 @@ spec:
         command: ['node', '-e']
         args: 
           - require('http').createServer((req, res) => { res.end('Hello World') }).listen(8080)
-            
-     
-        
+        ports:
+        - containerPort: 8080

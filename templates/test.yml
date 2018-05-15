@@ -1,0 +1,14 @@
+apiVersion: apps/v1beta1 # for versions before 1.8.0 use apps/v1beta1
+kind: Deployment
+metadata:
+  name: test-dev
+spec:
+  selector:
+    matchLabels:
+      app: nodejs-pods 
+  replicas: 4 # tells deployment to run 1 pods matching the template
+  template: 
+    metadata:
+      labels:
+        app: nodejs-pods 
+ 

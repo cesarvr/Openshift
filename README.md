@@ -316,21 +316,38 @@ spec:
 
 Here we need to modify the image section, where we going to replace **busybox** with the URL of our imported image, to get the URL just write ```oc get is``` and copy/paste the URL that appear in the section called **Docker Repo**. Next, we need to change the command and add some instruction to execute our Node.js server. 
 
-The ammended template should look like this: 
+We should change the container: 
 
-```sh
-  containers:
-    - name: myapp-container
-      image: 172.30.1.1:5000/hello-world/alpine-node
-      command: ['node', '-e']
-      args:
-        - require('http').createServer((req, res) => { res.end('Hello World') }).listen(8080)
+```yml
+apiVersion: apps/v1beta1 
+kind: Deployment
+metadata:
+  name: hello-dev
+spec:
+  selector:
+    matchLabels:
+      app: nodejs-app 
+  replicas: 2 
+  template: 
+    metadata:
+      labels:
+        app: nodejs-app 
+    spec:
+      containers:
+      - name: myapp-container
+        image: 172.30.1.1:5000/hello-world/alpine-node 
+        command: ['node', '-e']
+        args: 
+          - require('http').createServer((req, res) => { res.end('Hello World') }).listen(8080)
+        ports:
+        - containerPort: 8080
 ```
 
-This will execute ```node -e``` with those **args**, that snippet its just a super simple Node.js HTTP server program that would listen in port 8080 and will respond a ```Hello World```. 
+This will execute ```node -e``` with those **args**, that snippet its just a simple Node.js HTTP server program that would listen in port 8080 and will respond a ```Hello World```. We also going to open a port for our Pod, in this case **8080**. 
 
+We save this modification as ``` deploy-server.yml ```. 
 
-You can run the template: 
+Then we load the template:
 
 ```
 oc create -f deploy-server.yml 
@@ -374,7 +391,7 @@ spec:
   ports:
   - protocol: TCP
     port: 80
-    targetPort: 9376
+    targetPort: 8080
 ```
 
 
