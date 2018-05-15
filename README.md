@@ -357,11 +357,24 @@ Umm, we have finish the deployment of our server app, but we still are not comun
 Before we start exposing our server application to external traffic, we need to talk about some concepts, the first concept is Openshift labels, labels provide a easy way to organice our objects in the cluster, Services is an OpenShift object that is in charge to redirect the traffic to our Pods, it work at cluster level, meaning that apps inside the cluster can hit our Pods by targeting the Service name and we got as well Routers, which is another abstraction that redirect traffic from the outside to our Service.
 
 
+![Service-Router](https://github.com/cesarvr/Openshift/blob/master/assets/deploy-server.gif?raw=true)
 
 
+To create a Service we need to create a definition in a template: 
 
-```
+```yml
+kind: Service
+apiVersion: v1
+metadata:
+  name: HelloWorld-service
+spec:
+  selector:
+    app: nodejs-app
 
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 9376
 ```
 
 
