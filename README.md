@@ -15,7 +15,9 @@ They are various options to get started with OpenShift:
      - [Deployment Config](#deploy)
         - [Exporting Images](#exporting_images)
         - [Deploying Server Application](#server_application)
-     - [Exposing Services](#expose)
+     - [Exposing Our Application](#expose)
+        - [Service](#service)
+        - [Router](#routes)
 <!--te-->
 
 <a name="interactive"/>
@@ -364,25 +366,26 @@ oc delete deployment hello-dev
 Umm, we have finish the deployment of our server app, but we still are not comunnicating with our server from the outside, to be honest we don't have even access from our guest machine. For this we need a combination of two Openshift objects Service and Router, in the next section we are going to explore how route request to our Pods.
 
 
-
-
 <a name="expose"/>
 
 
-### Exposing Services
+### Exposing Our Application
 
 Before we start exposing our server application to external traffic, we need to talk about some concepts:
 
-- Label's: labels provide a easy way to organize our objects in the cluster, think of it as a way to group a set of objects, in the example above we choose to setup the label ```app: nodejs-app```.
+- Labels: labels provide a easy way to organize our objects in the cluster, think of it as a way to group a set of objects, in the example above we choose to setup the label ```app: nodejs-app```.
 
 - Services: OpenShift object that is in charge to redirect the traffic to our Pods, it work at cluster level, saying this, you should never target the IP of the Pod directly, always use a Service.   
-  - **Why?** Because the Pod entities are ephemeral objects designed to die, moved around nodes, etc.. . Services works as an entity that keep tracks of them and offer a single point endpoint to contact your Pod.  
+  - **Why?** Because the Pod entities are ephemeral objects designed to be disposable, moved on-demand around the cluster. Services works as an entity that keep tracks of them and offer a single point endpoint to contact your Pod.  
 
-- Routers: This object redirect traffic from the outside to our Service, we need this object when we want to expose our Services to the exterior.
+- Routers: This object redirect traffic from the outside to our Service. We need this object when we want to expose our Services to the exterior.
 
 
 ![Service-Router](https://github.com/cesarvr/Openshift/blob/master/assets/deploy-server.gif?raw=true)
 
+<a name="service"/>
+
+### Services
 
 To create a Service we need to create a definition in a template:
 
@@ -390,13 +393,47 @@ To create a Service we need to create a definition in a template:
 kind: Service
 apiVersion: v1
 metadata:
-  name: HelloWorld-service
+  name: helloworld
 spec:
   selector:
     app: nodejs-app
-
   ports:
   - protocol: TCP
     port: 80
     targetPort: 8080
+```
+
+In this definition we are telling OpenShift that we want a Service object that send traffic to objects with the tag ```app:nodejs-app```, also we want to take traffic from **port 80** and we want to forward the traffic to port 8080.
+
+Pay special attention to the **selector app:nodejs-app**, this basically tell the Service object to query objects in the cluster that match those labels, once he find it, it will start to direct traffic between them.
+
+To create the service:
+
+```sh
+oc create -f service.yml
+oc get service
+
+#NAME         CLUSTER-IP       EXTERNAL-IP   PORT(S)   AGE
+#helloworld   172.30.106.249   <none>        80/TCP    4h
+```
+
+<a name="router"/>
+
+### Router
+
+The [Router](https://docs.openshift.com/container-platform/3.7/install_config/router/index.html), as mentioned before is the object to direct traffic into the cluster, creating it is very simple, we can explicitly expose the service using ```oc expose```.
+
+```sh
+oc expose svc helloworld
+oc get route
+
+#NAME         HOST/PORT                                 PATH      SERVICES     PORT      TERMINATION   WILDCARD
+#helloworld   helloworld-hello-world.127.0.0.1.nip.io             helloworld   8080                    None
+```
+
+Now we can talk with our Pods from the outside.
+
+```sh
+curl helloworld-hello-world.127.0.0.1.nip.io
+#Hello World%
 ```
