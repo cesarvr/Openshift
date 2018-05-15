@@ -320,7 +320,7 @@ The ammended template should look like this:
 ```sh
   containers:
     - name: myapp-container
-      image: alpine-node
+      image: 172.30.1.1:5000/hello-world/alpine-node
       command: ['node', '-e']
       args:
         - require('http').createServer((req, res) => { res.end('Hello World') }).listen(8080)
