@@ -15,6 +15,7 @@ They are various options to get started with OpenShift:
      - [Deployment Config](#deploy)
         - [Exporting Images](#exporting_images)
         - [Deploying Server Application](#server_application)
+     - [Exposing Services](#expose)
 <!--te-->
 
 <a name="interactive"/>
@@ -348,8 +349,19 @@ Umm, we have finish the deployment of our server app, but we still are not comun
 
 
 
+<a name="expose"/>
+
+
+### Exposing Services
+
+Before we start exposing our server application to external traffic, we need to talk about some concepts, the first concept is Openshift labels, labels provide a easy way to organice our objects in the cluster, Services is an OpenShift object that is in charge to redirect the traffic to our Pods, it work at cluster level, meaning that apps inside the cluster can hit our Pods by targeting the Service name and we got as well Routers, which is another abstraction that redirect traffic from the outside to our Service.
 
 
 
+
+
+```
+
+```
 
 
