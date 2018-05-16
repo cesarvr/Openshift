@@ -17,7 +17,7 @@ They are various options to get started with OpenShift:
         - [Deploying Server Application](#server_application)
      - [Exposing Our Application](#expose)
         - [Service](#service)
-        - [Router](#routes)
+        - [Router](#router)
 <!--te-->
 
 <a name="interactive"/>
