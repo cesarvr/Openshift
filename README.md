@@ -363,7 +363,7 @@ If you have the old version of the deployment, you need to delete it first:
 oc delete deployment hello-dev
 ```
 
-Umm, we have finish the deployment of our server app, but we still are not comunnicating with our server from the outside, to be honest we don't have even access from our guest machine. For this we need a combination of two Openshift objects Service and Router, in the next section we are going to explore how route request to our Pods.
+Umm, we have finish the deployment of our server app, but we still are not communicating with our server from the outside, to be honest we don't have even access from our guest machine. For this we need a combination of two OpenShift objects Service and Router, in the next section we are going to explore how route request to our Pods.
 
 
 <a name="expose"/>
@@ -379,9 +379,6 @@ Before we start exposing our server application to external traffic, we need to 
   - **Why?** Because the Pod entities are ephemeral objects designed to be disposable, moved on-demand around the cluster. Services works as an entity that keep tracks of them and offer a single point endpoint to contact your Pod.  
 
 - Routers: This object redirect traffic from the outside to our Service. We need this object when we want to expose our Services to the exterior.
-
-
-![Service-Router](https://github.com/cesarvr/Openshift/blob/master/assets/deploy-server.gif?raw=true)
 
 <a name="service"/>
 
@@ -437,3 +434,5 @@ Now we can talk with our Pods from the outside.
 curl helloworld-hello-world.127.0.0.1.nip.io
 #Hello World%
 ```
+
+![Service-Router](https://github.com/cesarvr/Openshift/blob/master/assets/expose-modified-.gif?raw=true)
