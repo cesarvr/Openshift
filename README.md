@@ -1,4 +1,8 @@
-# Openshift
+# Openshift Developers Guide
+
+### Intro 
+
+The purpose of this guide is to introduce developers, in a practical way, to the concepts, components and tooling of the OpenShift ecosystem
 
 ### Getting Started
 
