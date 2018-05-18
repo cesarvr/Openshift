@@ -503,7 +503,7 @@ require('http').createServer((req, res) => {
 We go to the console, create a new project and choose Node.JS then we point to our git repo and thats it. If you want a project to test you can use [this project](https://github.com/cesarvr/hello-world-nodejs).
 
 
-![Deploying Java](https://raw.githubusercontent.com/cesarvr/Spring-Boot/master/docs/hello.gif)
+![Deploying Java](https://github.com/cesarvr/Openshift/blob/master/assets/new-app-nodejs.gif?raw=true)
 
 
 In the command line we can create project using ``` oc new-app ``` let see the example:
