@@ -506,6 +506,8 @@ We go to the console, create a new project and choose Node.JS then we point to o
 ![Deploying Java](https://github.com/cesarvr/Openshift/blob/master/assets/new-app-nodejs.gif?raw=true)
 
 
+#### Using the OC-Client
+
 In the command line we can create project using ``` oc new-app ``` let see the example:
 
 ```sh
