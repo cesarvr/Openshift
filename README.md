@@ -460,7 +460,7 @@ This templates is a way to automatise the creation of Objects, we just need to f
 
 ### Deploying A Java Application
 
-For deploying in Java at the moment of writing this you project need to use [Maven Package Manager](https://maven.apache.org/), and is very easy, for this particular example I would use this (Hello World)[https://github.com/cesarvr/Spring-Boot] Spring Boot Project, that I copy from [this place](https://spring.io/guides/gs/spring-boot/).
+For deploying in Java at the moment of writing this you project need to use [Maven Package Manager](https://maven.apache.org/), and is easy, for this particular example I would use this (Hello World)[https://github.com/cesarvr/Spring-Boot] Spring Boot Project, that I copy from [this place](https://spring.io/guides/gs/spring-boot/).
 
 To make it work is necessary just to modify the [pom.xml](https://github.com/cesarvr/Spring-Boot/blob/master/pom.xml#L23) and add Tomcat as the embedded servlet container and we need to tell maven that we want to build a [WAR](https://github.com/cesarvr/Spring-Boot/blob/master/pom.xml#L10) file.   
 
