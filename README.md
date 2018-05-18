@@ -2,7 +2,7 @@
 
 ### Getting Started
 
-They are various options to get started with OpenShift:
+They are various options to get started with Openshift:
 
 <!--ts-->
    * Getting Started
@@ -18,6 +18,9 @@ They are various options to get started with OpenShift:
      - [Exposing Our Application](#expose)
         - [Service](#service)
         - [Router](#router)
+     - [Openshift Application Templates](#oat)
+        - [Deploying Java](#java)
+        - [Deploying NodeJS](#node)
 <!--te-->
 
 <a name="interactive"/>
@@ -67,8 +70,8 @@ oc cluster up
 We should get the following message:
 
 ```sh
-Starting OpenShift using openshift/origin:v3.7.1 ...
-OpenShift server started.
+Starting Openshift using openshift/origin:v3.7.1 ...
+Openshift server started.
 
 The server is accessible via web console at:
     https://127.0.0.1:8443
@@ -89,6 +92,12 @@ In some cases using oc-cli method can be complicated to setup, [Minishift](https
 
 
 <a name="first"/>
+
+### Before We Start
+
+Openshift offers three ways to communicate, first option by directly calling HTTP request, second we have the Openshift console which is an admin portal where you can graphically specify what you want and the [oc-client](https://github.com/openshift/origin/releases) which is a robust terminal command line tool where you can summit the actions you want to accomplish.
+
+In this guide we are going to use mostly the [oc-client](https://github.com/openshift/origin/releases), just download the client and make it available to your PATH and you should be ready to go.    
 
 ### Login And First Project/Namespace
 
@@ -226,7 +235,7 @@ spec:
       labels:
         app: hello-dev
 ```
-Here we describe the state we want for our application, we specify we want two replicas, once the  Deployment Config is created, Openshift will check the current state of the system (0 replicas) versus the expected state (2 replicas), then it will increase the number of Pods to achieve the desired state.   
+Here we describe the state we want for our application, we specify we want two replicas, once the  Deployment Config is created, scheduler will check the current state of the system (0 replicas) versus the expected state (2 replicas), then it will increase the number of Pods to achieve the desired state.   
 
 ```
 spec:
@@ -315,7 +324,6 @@ spec:
         command: ['sh', '-c', 'echo Hello World! && sleep 13600']
 ```
 
-
 Here we need to modify the image section, where we going to replace **busybox** with the URL of our imported image, to get the URL just write ```oc get is``` and copy/paste the URL that appear in the section called **Docker Repo**. Next, we need to change the command and add some instruction to execute our Node.js server.
 
 We should change the container:
@@ -363,19 +371,19 @@ If you have the old version of the deployment, you need to delete it first:
 oc delete deployment hello-dev
 ```
 
-Umm, we have finish the deployment of our server app, but we still are not communicating with our server from the outside, to be honest we don't have even access from our guest machine. For this we need a combination of two OpenShift objects Service and Router, in the next section we are going to explore how route request to our Pods.
+Umm, we have finish the deployment of our server app, but we still are not communicating with our server from the outside, to be honest we don't have even access from our guest machine. For this we need a combination of two Openshift objects Service and Router, in the next section we are going to explore how route request to our Pods.
 
 
 <a name="expose"/>
 
 
-### Exposing Our Application
+## Exposing Our Application
 
 Before we start exposing our server application to external traffic, we need to talk about some concepts:
 
 - Labels: labels provide a easy way to organize our objects in the cluster, think of it as a way to group a set of objects, in the example above we choose to setup the label ```app: nodejs-app```.
 
-- Services: OpenShift object that is in charge to redirect the traffic to our Pods, it work at cluster level, saying this, you should never target the IP of the Pod directly, always use a Service.   
+- Services: Openshift object that is in charge to redirect the traffic to our Pods, it work at cluster level, saying this, you should never target the IP of the Pod directly, always use a Service.   
   - **Why?** Because the Pod entities are ephemeral objects designed to be disposable, moved on-demand around the cluster. Services works as an entity that keep tracks of them and offer a single point endpoint to contact your Pod.  
 
 - Routers: This object redirect traffic from the outside to our Service. We need this object when we want to expose our Services to the exterior.
@@ -400,7 +408,7 @@ spec:
     targetPort: 8080
 ```
 
-In this definition we are telling OpenShift that we want a Service object that send traffic to objects with the tag ```app:nodejs-app```, also we want to take traffic from **port 80** and we want to forward the traffic to port 8080.
+In this definition we are telling Openshift that we want a Service object that send traffic to objects with the tag ```app:nodejs-app```, also we want to take traffic from **port 80** and we want to forward the traffic to port 8080.
 
 Pay special attention to the **selector app:nodejs-app**, this basically tell the Service object to query objects in the cluster that match those labels, once he find it, it will start to direct traffic between them.
 
@@ -436,3 +444,32 @@ curl helloworld-hello-world.127.0.0.1.nip.io
 ```
 
 ![Service-Router](https://github.com/cesarvr/Openshift/blob/master/assets/expose-modified-.gif?raw=true)
+
+<a name="oat"/>
+
+## Openshift Application Templates
+
+Now that we know the fundamental building blocks to deploy our application, is time to introduce an alternative way to deploy applications. Instead of creating sophisticated scripts to create the objects your self, you can use Openshift application templates.
+
+This templates is a way to automatise the creation of Objects, we just need to follow the rules of our particular programming language. In this section I'll explain how to deploy applications for two programming languages Java and NodeJS as this are the languages I know most, if you know how to deploy in another one feel free to contribute.
+
+<a name="java"/>
+
+### Deploying A Java Application
+
+For deploying in Java at the moment of writing this you project need to use [Maven Package Manager](https://maven.apache.org/), and is very easy, for this particular example I would use this (Hello World)[https://github.com/cesarvr/Spring-Boot] Spring Boot Project, that I copy from [this place](https://spring.io/guides/gs/spring-boot/).
+
+To make it work is necessary just to modify the [pom.xml](https://github.com/cesarvr/Spring-Boot/blob/master/pom.xml#L23) and add Tomcat as the embedded servlet container and we need to tell maven that we want to build a [WAR](https://github.com/cesarvr/Spring-Boot/blob/master/pom.xml#L10) file.   
+
+If your project is store in a git repo in the cloud you can use the Openshift console:
+
+![Deploying Java](https://raw.githubusercontent.com/cesarvr/Spring-Boot/master/docs/hello.gif)
+
+
+
+
+<a name="node"/>
+
+### Deploying A NodeJS Application
+
+For NodeJS is less drama, we just need to define two entries in our package.json ```test``` and ``` start ```.
