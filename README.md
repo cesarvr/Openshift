@@ -95,7 +95,7 @@ In some cases using oc-cli method can be complicated to setup, [Minishift](https
 
 ### Before We Start
 
-Openshift offers three ways to communicate, first option by directly calling HTTP request, second we have the Openshift console which is an admin portal where you can graphically specify what you want and the [oc-client](https://github.com/openshift/origin/releases) which is a robust terminal command line tool where you can summit the actions you want to accomplish.
+Openshift offers three ways to communicate, calling HTTP request, Openshift console which is an admin portal where you can graphically specify what you want and the [oc-client](https://github.com/openshift/origin/releases) which is a robust terminal command line tool where you can summit the actions you want to accomplish.
 
 In this guide we are going to use mostly the [oc-client](https://github.com/openshift/origin/releases), just download the client and make it available to your PATH and you should be ready to go.    
 
@@ -466,10 +466,49 @@ If your project is store in a git repo in the cloud you can use the Openshift co
 ![Deploying Java](https://raw.githubusercontent.com/cesarvr/Spring-Boot/master/docs/hello.gif)
 
 
-
-
 <a name="node"/>
 
 ### Deploying A NodeJS Application
 
 For NodeJS is less drama, we just need to define two entries in our package.json ```test``` and ``` start ```.
+
+We need a **package.json**.
+```js
+
+{
+  "name": "hello",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 0"
+  },
+  "author": "",
+  "license": "ISC"
+}
+```
+
+And the source code.
+
+```js
+require('http').createServer((req, res) => {
+    res.end('Hello World')
+}).listen(8080)
+```
+
+We go to the console, create a new project and choose Node.JS then we point to our git repo and thats it. If you want a project to test you can use [this project](https://github.com/cesarvr/hello-world-nodejs).
+
+
+![Deploying Java](https://raw.githubusercontent.com/cesarvr/Spring-Boot/master/docs/hello.gif)
+
+
+In the command line we can create project using ``` oc new-app ``` let see the example:
+
+```sh
+oc new-app nodejs:6~https://github.com/cesarvr/hello-world-nodejs # NodeJS
+
+oc new-app wildfly:10.0~https://github.com/cesarvr/Spring-Boot --name=spring-boot # Java
+```
+
+It will create the exact same components and auto magically deploy your application.
