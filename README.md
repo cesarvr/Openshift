@@ -46,12 +46,42 @@ You need to allow insecure registries for this particular address, by editing ``
 [registries.insecure]
   registries = ['172.30.0.0/16'] 
 ```
+You can automate the rest of steps by running: 
 
-you installed docker you can create a script with the following content: 
+```sh
+sh -c "$(curl -fsSL https://gist.githubusercontent.com/cesarvr/968e800da7ec6659385ecffcbde03f1c/raw/8b507a17ff79719b602b0ac489035f8c9f33d4cd/oc-cluster-up-for-linux.sh)"
+```
+Which basically will execute this [script](https://gist.github.com/cesarvr/968e800da7ec6659385ecffcbde03f1c):
 
-<script src="https://gist.github.com/cesarvr/968e800da7ec6659385ecffcbde03f1c.js"></script>
+```sh
+# Before running this first add to /etc/containers/registries.conf  
+# 
+# [registries.insecure]
+# registries = ['172.30.0.0/16'] 
+
+sudo systemctl daemon-reload
+sudo systemctl restart docker
+
+DockerSN=$(docker network inspect -f "{{range .IPAM.Config }}{{ .Subnet }}{{end}}" bridge)
+
+echo "Docker subnet: $DockerSN"
+
+# Make firewal rules, open the ports, Openshift can pull/push images.
+sudo firewall-cmd --permanent --new-zone dockerc
+sudo firewall-cmd --permanent --zone dockerc --add-source $DockerSN 
+sudo firewall-cmd --permanent --zone dockerc --add-port 8443/tcp
+sudo firewall-cmd --permanent --zone dockerc --add-port 53/udp
+sudo firewall-cmd --permanent --zone dockerc --add-port 8053/udp
+sudo firewall-cmd --reload
 
 
+# Adding you user to the Docker group, this will be needed if you want to execute docker without sudo, and also it avoid having to do, sudo oc cluster up.
+
+sudo groupadd docker
+sudo usermod -aG docker $USER
+```
+
+After you execute this you should restart your machine, so your user can pick up the Docker group.
 
 
 #### Instructions for MacOSX
