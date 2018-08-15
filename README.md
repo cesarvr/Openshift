@@ -31,7 +31,7 @@ They are various options to get started with OpenShift:
       - [Webhooks](#webhook)
         - [Before We Start](#webhook-before)
         - [Setup](#webhook-setup)
-        
+
 <!--te-->
 
 <a name="interactive"/>
@@ -200,6 +200,7 @@ oc version
 oc v3.10.0+dd10d17
 ```
 
+## Application Development
 
 ### Login And First Project/Namespace
 
@@ -617,7 +618,7 @@ oc new-app wildfly:10.0~https://github.com/cesarvr/Spring-Boot --name=spring-boo
 
 It will create the exact same components and auto magically deploy your application.
 
-### Work-flow Automation
+## Workflow Automation
 
 
 <a name="webhook"/>
