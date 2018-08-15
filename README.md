@@ -1,16 +1,19 @@
-# Openshift Developers Guide
+# OpenShift Developers Guide
 
 
 The purpose of this guide is to introduce developers, in a practical way, to the concepts, components and tooling of the OpenShift ecosystem.
 
 ### Getting Started
 
-They are various options to get started with Openshift:
+They are various options to get started with OpenShift:
 
 <!--ts-->
    * Getting Started
-     - [Openshift Interactive](#interactive)
+     - [OpenShift Interactive](#interactive)
+     - [OpenShift IO](#oc-io)
      - [OC Cluster Up](#ocup)
+        - [Linux installation](#ocup-linux)  
+        - [MacOSX installation](#ocup-macosx)
      - [Minishift](#minishift)
    * Application Development
      - [Login And First Project/Namespace](#first)
@@ -21,32 +24,44 @@ They are various options to get started with Openshift:
      - [Exposing Our Application](#expose)
         - [Service](#service)
         - [Router](#router)
-     - [Openshift Application Templates](#oat)
+     - [OpenShift Application Templates](#oat)
         - [Deploying Java](#java)
         - [Deploying NodeJS](#node)
+   * Workflow Automation
+      - [Webhooks](#webhook)
+        - [Before We Start](#webhook-before)
+        - [Setup](#webhook-setup)
+        
 <!--te-->
 
 <a name="interactive"/>
 
-#### Openshift Interactive
+### OpenShift Interactive
 
-This [portal](https://learn.openshift.com/) is a great start to get familiar with Openshift.
+This [portal](https://learn.OpenShift.com/) is a great start to get familiar with OpenShift.
 
 <a name="ocup"/>
 
+### OpenShift.io
+
+Another alternative for learning is to create a free account in [OpenShift.io](https://manage.openshift.com/).
+
+
 ### Cluster Up
 
-#### Instructions for Linux 
+<a name="ocup-linux"/>
 
-Install Docker in your system using your prefred package manager, also keep in mind that you need to check the [compatibilily table](https://github.com/openshift/origin/blob/master/docs/cluster_up_down.md#prerequisites). 
+#### Instructions for Linux
 
-You need to allow insecure registries for this particular address, by editing ``` /etc/containers/registries.conf ```: 
+Install Docker in your system using your preferred package manager, also keep in mind that you need to check the [compatibilily table](https://github.com/OpenShift/origin/blob/master/docs/cluster_up_down.md#prerequisites).
+
+You need to allow insecure registries for this particular address, by editing ``` /etc/containers/registries.conf ```:
 
 ```sh
 [registries.insecure]
-  registries = ['172.30.0.0/16'] 
+  registries = ['172.30.0.0/16']
 ```
-You can automate the rest of steps by running: 
+You can automate the rest of steps by running:
 
 ```sh
 sh -c "$(curl -fsSL https://gist.githubusercontent.com/cesarvr/968e800da7ec6659385ecffcbde03f1c/raw/8b507a17ff79719b602b0ac489035f8c9f33d4cd/oc-cluster-up-for-linux.sh)"
@@ -55,9 +70,9 @@ Which basically will execute this [script](https://gist.github.com/cesarvr/968e8
 
 ```sh
 # Before running this first add to /etc/containers/registries.conf  
-# 
+#
 # [registries.insecure]
-# registries = ['172.30.0.0/16'] 
+# registries = ['172.30.0.0/16']
 
 sudo systemctl daemon-reload
 sudo systemctl restart docker
@@ -66,9 +81,9 @@ DockerSN=$(docker network inspect -f "{{range .IPAM.Config }}{{ .Subnet }}{{end}
 
 echo "Docker subnet: $DockerSN"
 
-# Make firewal rules, open the ports, Openshift can pull/push images.
+# Make firewal rules, open the ports, OpenShift can pull/push images.
 sudo firewall-cmd --permanent --new-zone dockerc
-sudo firewall-cmd --permanent --zone dockerc --add-source $DockerSN 
+sudo firewall-cmd --permanent --zone dockerc --add-source $DockerSN
 sudo firewall-cmd --permanent --zone dockerc --add-port 8443/tcp
 sudo firewall-cmd --permanent --zone dockerc --add-port 53/udp
 sudo firewall-cmd --permanent --zone dockerc --add-port 8053/udp
@@ -83,19 +98,29 @@ sudo usermod -aG docker $USER
 
 After you execute this you should restart your machine, so your user can pick up the Docker group.
 
+Then just execute:
+
+```
+oc cluster up
+```
+
+
+
+<a name="ocup-macosx"/>
+
 
 #### Instructions for MacOSX
 
 First we need to install [Docker](https://download.docker.com/mac/stable/1.13.1.15353/Docker.dmg), at the moment of writing this document *oc-client* work best with this old version.
 
 Add insecure registry:
-![Openshift UI](https://github.com/cesarvr/Openshift/blob/master/assets/insecure.png?raw=true)
+![OpenShift UI](https://github.com/cesarvr/OpenShift/blob/master/assets/insecure.png?raw=true)
 
 
 Install Socat using [Homebrew](https://brew.sh/), ``` brew install socat```
 
 
-Now download [oc-client](https://github.com/openshift/origin/releases), extract and add it into your path.
+Now download [oc-client](https://github.com/OpenShift/origin/releases), extract and add it into your path.
 
 ```sh
 export PATH=$HOME/folder-with-oc-client/:$PATH
@@ -111,7 +136,7 @@ If everything is fine, you should be able to run this:
   #features: Basic-Auth
 ```
 
-Now you can try and create your Openshift cluster:
+Now you can try and create your OpenShift cluster:
 
 ```sh
 oc cluster up
@@ -120,8 +145,8 @@ oc cluster up
 We should get the following message:
 
 ```sh
-Starting Openshift using openshift/origin:v3.7.1 ...
-Openshift server started.
+Starting OpenShift using OpenShift/origin:v3.7.1 ...
+OpenShift server started.
 
 The server is accessible via web console at:
     https://127.0.0.1:8443
@@ -145,9 +170,9 @@ In some cases using oc-cli method can be complicated to setup, [Minishift](https
 
 ### Before We Start
 
-Openshift offers three ways to communicate, calling HTTP request, Openshift console which is an admin portal where you can graphically specify what you want and the [oc-client](https://github.com/openshift/origin/releases) which is a robust terminal command line tool where you can summit the actions you want to accomplish.
+OpenShift offers three ways to communicate, calling HTTP request, OpenShift console which is an admin portal where you can graphically specify what you want and the [oc-client](https://github.com/OpenShift/origin/releases) which is a robust terminal command line tool where you can summit the actions you want to accomplish.
 
-In this guide we are going to use mostly the [oc-client](https://github.com/openshift/origin/releases), just download the client and make it available to your PATH and you should be ready to go.    
+In this guide we are going to use mostly the [oc-client](https://github.com/OpenShift/origin/releases), just download the client and make it available to your PATH and you should be ready to go.    
 
 
 ## Linux/MacOSX  
@@ -156,21 +181,21 @@ Installing oc-client
 
 ```sh
 # download
-wget oc.tar.gz -O oc.tar.gz https://github.com/openshift/origin/releases/download/v3.10.0/openshift-origin-client-tools-v3.10.0-dd10d17-linux-64bit.tar.gz
+wget oc.tar.gz -O oc.tar.gz https://github.com/OpenShift/origin/releases/download/v3.10.0/OpenShift-origin-client-tools-v3.10.0-dd10d17-linux-64bit.tar.gz
 
-# extract 
+# extract
 tar -xf oc.tar.gz -C <your-folder>
 ```
 
 To make the binary accessible in your shell, add the folder to your $PATH environment variable. By adding to your .bashrc/.zshrc.  
 
 ```
-export PATH=$HOME/bin:/usr/local/bin:$HOME/<your-folder>/openshift/:$PATH 
+export PATH=$HOME/bin:/usr/local/bin:$HOME/<your-folder>/OpenShift/:$PATH
 ```
-Exit the console and type: 
+Exit the console and type:
 
 ```
-source ~/.bashrc # or ~/.zshrc 
+source ~/.bashrc # or ~/.zshrc
 oc version
 oc v3.10.0+dd10d17
 ```
@@ -178,7 +203,7 @@ oc v3.10.0+dd10d17
 
 ### Login And First Project/Namespace
 
-Once you have setup your cluster you can start playing with Openshift, first we can start by login in, to do this we need to write the following command:
+Once you have setup your cluster you can start playing with OpenShift, first we can start by login in, to do this we need to write the following command:
 
 ```
   oc login -u <username>
@@ -190,7 +215,7 @@ or if you want to get a interactive login:
  oc login
 ```
 
-Project/Namespaces are the way Openshift divide the cluster between users, basically all your object should be defined under a Openshift namespace, to create a new project you should do.
+Project/Namespaces are the way OpenShift divide the cluster between users, basically all your object should be defined under a OpenShift namespace, to create a new project you should do.
 
 ```
  oc new-project hello-world
@@ -207,7 +232,7 @@ This will create a new namespace called **hello-world**.
 
 ### Your First Pod
 
-The Pod is the minimal building blog in Openshift, represent a single application from the perspective of Openshift. But in the inside it can contain multiple resources containers, storage resources, etc.
+The Pod is the minimal building blog in OpenShift, represent a single application from the perspective of OpenShift. But in the inside it can contain multiple resources containers, storage resources, etc.
 
 To create we just need to create a small template:
 
@@ -222,23 +247,23 @@ spec:
   containers:
   - name: myapp-container
     image: busybox
-    command: ['sh', '-c', 'echo Hello Openshift! && sleep 3600']
+    command: ['sh', '-c', 'echo Hello OpenShift! && sleep 3600']
 ```
 
 
-Consider this template like a recipe, it basically tells Openshift what to do for you, in this case it specifies a resource of the **kind** Pod, and put some name to it *myapp-pod*, then we describe what we want to run inside, we said, we want a **busybox** container and we want to run to run some shell **command** in it.  
+Consider this template like a recipe, it basically tells OpenShift what to do for you, in this case it specifies a resource of the **kind** Pod, and put some name to it *myapp-pod*, then we describe what we want to run inside, we said, we want a **busybox** container and we want to run to run some shell **command** in it.  
 
-Then we need to pass this to Openshift:
+Then we need to pass this to OpenShift:
 
 ```shell
 oc create -f pod.yml       #pod "myapp-pod" created
 
 #or you can grab the template from the cloud.
 
-oc create -f https://raw.githubusercontent.com/cesarvr/Openshift/master/templates/pod.yml
+oc create -f https://raw.githubusercontent.com/cesarvr/OpenShift/master/templates/pod.yml
 ```
 
-Then we can ask Openshift, about the state of the resource by doing:
+Then we can ask OpenShift, about the state of the resource by doing:
 
 ```shell
 oc get pods                                                               
@@ -264,9 +289,9 @@ We should see our Pod up and running.
 
 ### Your First Deployment
 
-In the last section, we end up running our first pod, but there some catch, we are not able to scale up or down our application, also we are not able to update the state or rolling out a new version. For been able to do that we need another entity called [DeploymentConfig](https://docs.openshift.com/enterprise/3.0/dev_guide/deployments.html).
+In the last section, we end up running our first pod, but there some catch, we are not able to scale up or down our application, also we are not able to update the state or rolling out a new version. For been able to do that we need another entity called [DeploymentConfig](https://docs.OpenShift.com/enterprise/3.0/dev_guide/deployments.html).
 
-[DeploymentConfig] is a way to describe a desired state for our application, we can scale, downscale, pause deployments, roll-back and roll-out.
+[DeploymentConfig](https://docs.OpenShift.com/enterprise/3.0/dev_guide/deployments.html) is a way to describe a desired state for our application, we can scale, downscale, pause deployments, roll-back and roll-out.
 
 Let's scale our app, to do this we just need to create a Deployment template:
 
@@ -299,7 +324,7 @@ kind: Deployment
 metadata:
   name: hello-dev
 ```
-Here we said we want to target the **apps/v1beta** endpoint of Openshift, and inside this endpoint we want the Deployment object.
+Here we said we want to target the **apps/v1beta** endpoint of OpenShift, and inside this endpoint we want the Deployment object.
 
 ```yml
 spec:
@@ -333,7 +358,7 @@ To load this Deployment template, is similar to what we did with our Pod last ti
 
 #### Deployment
 
-![deployment](https://github.com/cesarvr/Openshift/blob/master/assets/oc-deployment-2.gif?raw=true)
+![deployment](https://github.com/cesarvr/OpenShift/blob/master/assets/oc-deployment-2.gif?raw=true)
 
 
 <a name="exporting_images"/>
@@ -341,7 +366,7 @@ To load this Deployment template, is similar to what we did with our Pod last ti
 ### Exporting Images
 We are going to deploy simple [Node.js](https://nodejs.org/en/) application, the best way to do this is to use a BuilderConfig but for now and for the sake of learning we going use a external image and update our Deployment Config.  
 
-To achieve this goal we are going to export an image to our cluster, for this we need a Openshift object called **ImageStream**, which allow us to monitor and perform actions based in images tag changes.
+To achieve this goal we are going to export an image to our cluster, for this we need a OpenShift object called **ImageStream**, which allow us to monitor and perform actions based in images tag changes.
 
 To export the image we run the following code
 
@@ -362,7 +387,7 @@ Some explanations:
  - **Name**
    - **Name**: Name of the ImageStream object.  
  - **Docker Repo URL**
-   - **172.30.1.1:5000**: This is the URL for the Docker registry in your Openshift installation.
+   - **172.30.1.1:5000**: This is the URL for the Docker registry in your OpenShift installation.
    - **hello-world**: This is the project/namespace, this means that this image is pullable from this project/namespace only, which is good, because we don't want to clutter the Docker registry for others.
    - **alpine-node**: It's the actual image our ImageStream is pointing to.  
  - **Tags**
@@ -440,7 +465,7 @@ Then we load the template:
 oc create -f deploy-server.yml
 ```
 
-![deployment server](https://github.com/cesarvr/Openshift/blob/master/assets/deploy-server.gif?raw=true)
+![deployment server](https://github.com/cesarvr/OpenShift/blob/master/assets/deploy-server.gif?raw=true)
 
 If you have the old version of the deployment, you need to delete it first:
 
@@ -448,7 +473,7 @@ If you have the old version of the deployment, you need to delete it first:
 oc delete deployment hello-dev
 ```
 
-Umm, we have finish the deployment of our server app, but we still are not communicating with our server from the outside, to be honest we don't have even access from our guest machine. For this we need a combination of two Openshift objects Service and Router, in the next section we are going to explore how route request to our Pods.
+Umm, we have finish the deployment of our server app, but we still are not communicating with our server from the outside, to be honest we don't have even access from our guest machine. For this we need a combination of two OpenShift objects Service and Router, in the next section we are going to explore how route request to our Pods.
 
 
 <a name="expose"/>
@@ -460,7 +485,7 @@ Before we start exposing our server application to external traffic, we need to 
 
 - Labels: labels provide a easy way to organize our objects in the cluster, think of it as a way to group a set of objects, in the example above we choose to setup the label ```app: nodejs-app```.
 
-- Services: Openshift object that is in charge to redirect the traffic to our Pods, it work at cluster level, saying this, you should never target the IP of the Pod directly, always use a Service.   
+- Services: OpenShift object that is in charge to redirect the traffic to our Pods, it work at cluster level, saying this, you should never target the IP of the Pod directly, always use a Service.   
   - **Why?** Because the Pod entities are ephemeral objects designed to be disposable, moved on-demand around the cluster. Services works as an entity that keep tracks of them and offer a single point endpoint to contact your Pod.  
 
 - Routers: This object redirect traffic from the outside to our Service. We need this object when we want to expose our Services to the exterior.
@@ -485,7 +510,7 @@ spec:
     targetPort: 8080
 ```
 
-In this definition we are telling Openshift that we want a Service object that send traffic to objects with the tag ```app:nodejs-app```, also we want to take traffic from **port 80** and we want to forward the traffic to port 8080.
+In this definition we are telling OpenShift that we want a Service object that send traffic to objects with the tag ```app:nodejs-app```, also we want to take traffic from **port 80** and we want to forward the traffic to port 8080.
 
 Pay special attention to the **selector app:nodejs-app**, this basically tell the Service object to query objects in the cluster that match those labels, once he find it, it will start to direct traffic between them.
 
@@ -503,7 +528,7 @@ oc get service
 
 ### Router
 
-The [Router](https://docs.openshift.com/container-platform/3.7/install_config/router/index.html), as mentioned before is the object to direct traffic into the cluster, creating it is very simple, we can explicitly expose the service using ```oc expose```.
+The [Router](https://docs.OpenShift.com/container-platform/3.7/install_config/router/index.html), as mentioned before is the object to direct traffic into the cluster, creating it is very simple, we can explicitly expose the service using ```oc expose```.
 
 ```sh
 oc expose svc helloworld
@@ -520,15 +545,15 @@ curl helloworld-hello-world.127.0.0.1.nip.io
 #Hello World%
 ```
 
-![Service-Router](https://github.com/cesarvr/Openshift/blob/master/assets/expose-modified-.gif?raw=true)
+![Service-Router](https://github.com/cesarvr/OpenShift/blob/master/assets/expose-modified-.gif?raw=true)
 
 <a name="oat"/>
 
-## Openshift Application Templates
+## OpenShift Application Templates
 
-Now that we know the fundamental building blocks to deploy our application, is time to introduce an alternative way to deploy applications. Instead of creating sophisticated scripts to create the objects your self, you can use Openshift application templates.
+Now that we know the fundamental building blocks to deploy our application, is time to introduce an alternative way to deploy applications. Instead of creating sophisticated scripts to create the objects your self, you can use OpenShift application templates.
 
-This templates is a way to automatise the creation of Objects, we just need to follow the rules of our particular programming language. In this section I'll explain how to deploy applications for two programming languages Java and NodeJS as this are the languages I know most, if you know how to deploy in another one feel free to contribute.
+This templates is a way to automate the creation of Objects, we just need to follow the rules of our particular programming language. In this section I'll explain how to deploy applications for two programming languages Java and NodeJS as this are the languages I know most, if you know how to deploy in another one feel free to contribute.
 
 <a name="java"/>
 
@@ -538,7 +563,7 @@ For deploying in Java at the moment of writing this you project need to use [Mav
 
 To make it work is necessary just to modify the [pom.xml](https://github.com/cesarvr/Spring-Boot/blob/master/pom.xml#L23) and add Tomcat as the embedded servlet container and we need to tell maven that we want to build a [WAR](https://github.com/cesarvr/Spring-Boot/blob/master/pom.xml#L10) file.   
 
-If your project is store in a git repo in the cloud you can use the Openshift console:
+If your project is store in a git repository in the cloud you can use the OpenShift console:
 
 ![Deploying Java](https://raw.githubusercontent.com/cesarvr/Spring-Boot/master/docs/hello.gif)
 
@@ -574,10 +599,10 @@ require('http').createServer((req, res) => {
 }).listen(8080)
 ```
 
-We go to the console, create a new project and choose Node.JS then we point to our git repo and thats it. If you want a project to test you can use [this project](https://github.com/cesarvr/hello-world-nodejs).
+We go to the console, create a new project and choose Node.JS then we point to our git repository and that's it. If you want a project to test you can use [this project](https://github.com/cesarvr/hello-world-nodejs).
 
 
-![Deploying Java](https://github.com/cesarvr/Openshift/blob/master/assets/new-app-nodejs.gif?raw=true)
+![Deploying Java](https://github.com/cesarvr/OpenShift/blob/master/assets/new-app-nodejs.gif?raw=true)
 
 
 #### Using the OC-Client
@@ -591,3 +616,72 @@ oc new-app wildfly:10.0~https://github.com/cesarvr/Spring-Boot --name=spring-boo
 ```
 
 It will create the exact same components and auto magically deploy your application.
+
+### Work-flow Automation
+
+
+<a name="webhook"/>
+
+### Webhooks
+
+Webhook are just a notification protocol implemented by some popular git providers like GitHub, Bitbucket, VST, etc.
+
+It work by setting up a destination for the notification and an action (that may vary depending on providers) to trigger this notification. The receiver can be any web service capable of handling that request like a BuildConfig, Jenkins Pipeline, etc.   
+
+BuildConfig has two Webhook endpoints to trigger automatic builds, one is a generic Webhook hanlder the other is specific for Github's Webhook. I'm going to use Github for this because my sample project is hosted there but the instructions are the same for other providers.  
+
+<a name="webhook-before"/>
+
+### Before we start
+
+Before we start make sure your OpenShift instance is accessible from the internet, that means you cannot test this with ```oc-cli``` or minishift. This only works with instance that are available through the network.
+
+- To setup the Webhook we need to provide the receivers URL. The receiver in this case will be our BuildConfig.
+
+```sh
+oc describe bc node-build | grep Webhook -A 1
+
+Webhook GitHub:
+       URL: https://<OCP-big-URL>/.../webhooks/<secret>/github
+Webhook Generic:
+       URL: https://<OCP-big-URL>/.../webhooks/<secret>/generic
+```
+
+- Now that we have our URL we need to replace the <*secret*> part with secrets tokens, both alternative can be found be doing:
+
+```sh
+# getting the secret token for GitHub
+oc get bc node-build -o yaml | grep "github:\|generic:" -A 1
+
+ - github:
+     secret: <some-alpha-numeric-token> #-QWCCVVVV....
+ - generic:
+     secret: .....
+
+```
+
+This information is also available in the OpenShift Web Console, you need to navigate to the section Project/Builds/Builds, configuration tab.
+
+![build-webhook-ui](https://raw.githubusercontent.com/cesarvr/hugo-blog/master/static/static/oc-image-stream/oc-automation/build-webhook-ui.PNG)
+
+
+<a name="webhook-setup"/>
+
+### Setting up our project
+
+
+![webhook-github](https://raw.githubusercontent.com/cesarvr/hugo-blog/master/static/static/oc-image-stream/oc-automation/webhook-github.PNG)
+
+If you have a Github account you can [fork this project](https://github.com/cesarvr/hello-world-nodejs). Once your have your project in Github, you need to configure the Webhook in Settings -> WebHooks, and add the following information:
+
+- Payload URL: You need to put here the URL of your BuildConfig Webhook.
+- Content-type: **Application/JSON**
+- Secret: <some-alpha-numeric-token>
+- Which Event: You can configure here what type of events you want(push, delete branch, etc.) I'll choose **Just the push event**.
+- Active: should be checked.
+
+Once you complete this information you can test to see if the integration is successful.
+
+![webhook-delivery](https://raw.githubusercontent.com/cesarvr/hugo-blog/master/static/static/oc-image-stream/oc-automation/webhook-deliver.PNG)
+
+Now our build is automatically triggered every time we make a change.
