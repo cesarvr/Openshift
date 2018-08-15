@@ -34,10 +34,27 @@ This [portal](https://learn.openshift.com/) is a great start to get familiar wit
 
 <a name="ocup"/>
 
-#### Cluster Up
+### Cluster Up
+
+#### Instructions for Linux 
+
+Install Docker in your system using your prefred package manager, also keep in mind that you need to check the [compatibilily table](https://github.com/openshift/origin/blob/master/docs/cluster_up_down.md#prerequisites). 
+
+You need to allow insecure registries for this particular address, by editing ``` /etc/containers/registries.conf ```: 
+
+```sh
+[registries.insecure]
+  registries = ['172.30.0.0/16'] 
+```
+
+you installed docker you can create a script with the following content: 
+
+<script src="https://gist.github.com/cesarvr/968e800da7ec6659385ecffcbde03f1c.js"></script>
 
 
-##### Instructions for MacOSX
+
+
+#### Instructions for MacOSX
 
 First we need to install [Docker](https://download.docker.com/mac/stable/1.13.1.15353/Docker.dmg), at the moment of writing this document *oc-client* work best with this old version.
 
@@ -101,6 +118,33 @@ In some cases using oc-cli method can be complicated to setup, [Minishift](https
 Openshift offers three ways to communicate, calling HTTP request, Openshift console which is an admin portal where you can graphically specify what you want and the [oc-client](https://github.com/openshift/origin/releases) which is a robust terminal command line tool where you can summit the actions you want to accomplish.
 
 In this guide we are going to use mostly the [oc-client](https://github.com/openshift/origin/releases), just download the client and make it available to your PATH and you should be ready to go.    
+
+
+## Linux/MacOSX  
+
+Installing oc-client
+
+```sh
+# download
+wget oc.tar.gz -O oc.tar.gz https://github.com/openshift/origin/releases/download/v3.10.0/openshift-origin-client-tools-v3.10.0-dd10d17-linux-64bit.tar.gz
+
+# extract 
+tar -xf oc.tar.gz -C <your-folder>
+```
+
+To make the binary accessible in your shell, add the folder to your $PATH environment variable. By adding to your .bashrc/.zshrc.  
+
+```
+export PATH=$HOME/bin:/usr/local/bin:$HOME/<your-folder>/openshift/:$PATH 
+```
+Exit the console and type: 
+
+```
+source ~/.bashrc # or ~/.zshrc 
+oc version
+oc v3.10.0+dd10d17
+```
+
 
 ### Login And First Project/Namespace
 
