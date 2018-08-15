@@ -685,4 +685,4 @@ Once you complete this information you can test to see if the integration is suc
 
 ![webhook-delivery](https://raw.githubusercontent.com/cesarvr/hugo-blog/master/static/static/oc-image-stream/oc-automation/webhook-deliver.PNG)
 
-Now our build is automatically triggered every time we make a change.
+Now our build is automatically triggered every time we push into your repository.
