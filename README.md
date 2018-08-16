@@ -53,7 +53,7 @@ Another alternative for learning is to create a free account in [OpenShift.io](h
 
 #### Instructions for Linux
 
-Install Docker in your system using your preferred package manager, also keep in mind that you need to check the [compatibilily table](https://github.com/OpenShift/origin/blob/master/docs/cluster_up_down.md#prerequisites).
+Install Docker in your system using your preferred package manager, also keep in mind that you need to check the [compatibility table](https://github.com/OpenShift/origin/blob/master/docs/cluster_up_down.md#prerequisites).
 
 You need to allow insecure registries for this particular address, by editing ``` /etc/containers/registries.conf ```:
 
@@ -81,7 +81,7 @@ DockerSN=$(docker network inspect -f "{{range .IPAM.Config }}{{ .Subnet }}{{end}
 
 echo "Docker subnet: $DockerSN"
 
-# Make firewal rules, open the ports, OpenShift can pull/push images.
+# Make firewall rules, open the ports, OpenShift can pull/push images.
 sudo firewall-cmd --permanent --new-zone dockerc
 sudo firewall-cmd --permanent --zone dockerc --add-source $DockerSN
 sudo firewall-cmd --permanent --zone dockerc --add-port 8443/tcp
@@ -629,7 +629,7 @@ Webhook are just a notification protocol implemented by some popular git provide
 
 It work by setting up a destination for the notification and an action (that may vary depending on providers) to trigger this notification. The receiver can be any web service capable of handling that request like a BuildConfig, Jenkins Pipeline, etc.   
 
-BuildConfig has two Webhook endpoints to trigger automatic builds, one is a generic Webhook hanlder the other is specific for Github's Webhook. I'm going to use Github for this because my sample project is hosted there but the instructions are the same for other providers.  
+BuildConfig has two webhook endpoints to trigger automatic builds, one is a generic webhook handler the other is specific for Github's webhook. I'm going to use Github for this because my sample project is hosted there but the instructions are the same for other providers.  
 
 <a name="webhook-before"/>
 
@@ -637,7 +637,7 @@ BuildConfig has two Webhook endpoints to trigger automatic builds, one is a gene
 
 Before we start make sure your OpenShift instance is accessible from the internet, that means you cannot test this with ```oc-cli``` or minishift. This only works with instance that are available through the network.
 
-- To setup the Webhook we need to provide the receivers URL. The receiver in this case will be our BuildConfig.
+- To setup the webhook we need to provide the receivers URL. The receiver in this case will be our BuildConfig.
 
 ```sh
 oc describe bc node-build | grep Webhook -A 1
