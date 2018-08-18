@@ -495,6 +495,8 @@ Before we start exposing our server application to external traffic, we need to 
 
 ### Services
 
+#### Using Templates
+
 To create a Service we need to create a definition in a template:
 
 ```yml
@@ -525,6 +527,42 @@ oc get service
 #helloworld   172.30.106.249   <none>        80/TCP    4h
 ```
 
+
+#### Alternative way
+
+You can also create a Service by running the ```oc create service ``` command:
+
+```sh
+oc create service loadbalancer  helloworld --tcp=80:8080
+# service "helloworld" created
+```
+
+The first parameter ```loadbalancer``` tells that we want to balance the traffic between the pods, next parameter is the name, and the last parameter is a mapping between the port exposed by the Service the number ```80``` and the port exposed by our application ```8080``` as per our deployment template above.  
+
+If you named your service with the same name as your application then you are done. If that not the case then you need to modify the Service:
+
+```
+# edit the service object
+oc edit svc helloworld -o yaml
+```
+
+This will open the service object in yaml format in edit mode, we need to locate the *selector* and replace with the label of our deployment object.
+
+From this:
+
+```yml
+selector:
+  app: helloworld
+```
+
+To this:
+
+```yml
+selector:
+ app: nodejs-app
+```
+
+
 <a name="router"/>
 
 ### Router
@@ -547,6 +585,16 @@ curl helloworld-hello-world.127.0.0.1.nip.io
 ```
 
 ![Service-Router](https://github.com/cesarvr/OpenShift/blob/master/assets/expose-modified-.gif?raw=true)
+
+
+
+
+
+
+
+
+
+
 
 <a name="oat"/>
 
