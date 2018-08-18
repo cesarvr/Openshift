@@ -539,7 +539,7 @@ oc create service loadbalancer  helloworld --tcp=80:8080
 
 The first parameter ```loadbalancer``` tells that we want to balance the traffic between the pods, next parameter is the name, and the last parameter is a mapping between the port exposed by the Service the number ```80``` and the port exposed by our application ```8080``` as per our deployment template above.  
 
-If you named your service with the same name as your application then you are done. If that not the case then you need to modify the Service:
+If you named your service with the same name as your DeploymentConfig then you are done, because they all will share the same label *app: <name-of-your-app>*. If that not the case then you need to modify the Service:
 
 ```
 # edit the service object
