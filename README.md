@@ -23,6 +23,9 @@ They are various options to get started with OpenShift:
         - [Deploying Server Application](#server_application)
      - [Exposing Our Application](#expose)
         - [Service](#service)
+          - [Simple](#svc-simple)
+          - [Using Templates](#svc-template)
+          - [Bonus](#svc-alternative)
         - [Router](#router)
      - [OpenShift Application Templates](#oat)
         - [Deploying Java](#java)
@@ -495,6 +498,19 @@ Before we start exposing our server application to external traffic, we need to 
 
 ### Services
 
+<a name="svc-simple"/>
+
+#### Simple Way 
+
+```
+oc expose dc <name-of-your-DeploymentConfig> --port=8080
+```
+
+This command basically creates a Service object ready to send traffic to your pods. The first parameters is your DeploymentConfig name, then you need to specify the port for your application ```8080```.  
+
+
+<a name="svc-template"/>
+
 #### Using Templates
 
 To create a Service we need to create a definition in a template:
@@ -529,6 +545,8 @@ oc get service
 
 
 #### Alternative way
+
+<a name="svc-alternative"/>
 
 You can also create a Service by running the ```oc create service ``` command:
 
@@ -585,15 +603,6 @@ curl helloworld-hello-world.127.0.0.1.nip.io
 ```
 
 ![Service-Router](https://github.com/cesarvr/OpenShift/blob/master/assets/expose-modified-.gif?raw=true)
-
-
-
-
-
-
-
-
-
 
 
 <a name="oat"/>
