@@ -210,7 +210,11 @@ oc v3.10.0+dd10d17
 Once you have setup your cluster you can start playing with OpenShift, first we can start by login in, to do this we need to write the following command:
 
 ```
-  oc login -u <username>
+  oc login <url-of-your-openshift-instance> -u <username>
+  #
+  # Example: 
+  #              
+  #oc login https://console.starter-us-west-2.openshift.com -u user@domain.com
 ```
 
 or if you want to get a interactive login:
