@@ -64,6 +64,15 @@ You need to allow insecure registries for this particular address, by editing ``
 [registries.insecure]
   registries = ['172.30.0.0/16']
 ```
+
+Other Linux distribution require to add a file called `` /etc/docker/daemon.json `` with the following content: 
+
+```json
+{
+  "insecure-registries" : ["172.30.0.0/16"]
+}
+```
+
 You can automate the rest of steps by running:
 
 ```sh
