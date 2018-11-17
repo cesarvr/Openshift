@@ -34,6 +34,7 @@ They are various options to get started with OpenShift:
       - [Webhooks](#webhook)
         - [Before We Start](#webhook-before)
         - [Setup](#webhook-setup)
+   * [Advanced Deployment](https://github.com/cesarvr/ambassador)
 
 <!--te-->
 
